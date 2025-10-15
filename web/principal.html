@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Principal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Bem-vindo, <span id="nomeProf"></span></h2>
+        <button class="btn btn-danger" onclick="logout()">Sair</button>
+        <button class="btn btn-primary" onclick="window.location.href='cadastro_turma.html'">Cadastrar Turma</button>
+        <h3>Turmas:</h3>
+        <table class="table" id="turmasTable">
+            <thead><tr><th>Número</th><th>Nome</th><th>Ações</th></tr></thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <script>
+        async function loadData() {
+            const res = await fetch('http://localhost:3000/check-session');
+            if (!res.ok) window.location.href = 'index.html';
+            const user = await res.json();
+            document.getElementById('nomeProf').textContent = user.nome;
+
+            const turmasRes = await fetch('http://localhost:3000/turmas');
+            const turmas = await turmasRes.json();
+            const tbody = document.querySelector('#turmasTable tbody');
+            tbody.innerHTML = '';
+            turmas.forEach((turma, index) => {
+                tbody.innerHTML += `<tr><td>${index+1}</td><td>${turma.nome}</td><td>
+                    <button class="btn btn-warning" onclick="excluirTurma(${turma.id})">Excluir</button>
+                    <button class="btn btn-info" onclick="visualizarAtividades(${turma.id})">Visualizar</button>
+                </td></tr>`;
+            });
+        }
+        function logout() { fetch('http://localhost:3000/logout', {method: 'POST'}).then(() => window.location.href = 'index.html'); }
+        function visualizarAtividades(id) { window.location.href = `atividades.html?turma_id=${id}`; }
+        window.onload = loadData;
+    </script>
+</body>
+</html>

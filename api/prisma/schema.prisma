@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Professor {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  senha     String
+  nome      String
+  turmas    Turma[]
+}
+
+model Turma {
+  id          Int        @id @default(autoincrement())
+  nome        String
+  professorId Int
+  professor   Professor  @relation(fields: [professorId], references: [id])
+  atividades  Atividade[]
+}
+
+model Atividade {
+  id         Int    @id @default(autoincrement())
+  descricao  String
+  turmaId    Int
+  turma      Turma  @relation(fields: [turmaId], references: [id])
+}
