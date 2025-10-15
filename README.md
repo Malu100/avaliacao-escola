@@ -9,5 +9,5 @@
 1. Clone o repositório: `git clone https://github.com/seuusuario/escolaavaliacao.git`.
 2. Instale dependências no back-end: `cd api && npm install`.
 3. Rode o back-end: `node app.js` (porta 3000).
-4. Abra o front-end: Abra `web/index.html` no navegador (ex: http://localhost:3000 não é necessário, pois é estático, mas API em 3000).
+4. Abra o front-end: Abra `http://localhost:3000l` no navegador.
 5. Teste: Use credenciais de teste (ex: email: prof1@example.com, senha: senha1).
