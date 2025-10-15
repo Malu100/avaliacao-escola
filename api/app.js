@@ -155,6 +155,19 @@ app.post('/atividades', async (req, res) => {
     }
 });
 
+// Rota para excluir uma atividade
+app.delete('/atividades/:id', async (req, res) => {
+    if (!req.session.user) return res.sendStatus(401);
+    try {
+        await prisma.atividade.delete({
+            where: { id: parseInt(req.params.id) },
+        });
+        res.sendStatus(200);
+    } catch (error) {
+        res.sendStatus(500);
+    }
+});
+
 // Iniciar o servidor
 app.listen(3000, () => console.log('Servidor rodando na porta 3000'));
 
