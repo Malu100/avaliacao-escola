@@ -8,22 +8,34 @@ const prisma = new PrismaClient();
 
 // Configuração de middlewares
 app.use(bodyParser.json());
-app.use(session({ secret: 'seu-segredo', resave: false, saveUninitialized: true }));
+app.use(session({ 
+    secret: 'seu-segredo', 
+    resave: false, 
+    saveUninitialized: true,
+    cookie: { secure: false, httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }
+}));
 
 // Middleware para permitir CORS (necessário para front-end estático)
 app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, DELETE');
+    res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    if (req.method === 'OPTIONS') {
+        return res.sendStatus(200);
+    }
     next();
 });
+
+// Servir arquivos estáticos do frontend
+app.use(express.static('../web'));
 
 // Rota de login
 app.post('/login', async (req, res) => {
     const { email, senha } = req.body;
     try {
-        const professor = await prisma.professor.findUnique({
-            where: { email, senha },
+        const professor = await prisma.professor.findFirst({
+            where: { email: email, senha: senha },
         });
         if (professor) {
             req.session.user = professor;
@@ -105,7 +117,7 @@ app.delete('/turmas/:id', async (req, res) => {
             return res.status(400).json({ message: 'Você não pode excluir uma turma com atividades cadastradas' });
         }
         await prisma.turma.delete({
-            where: { id: parseInt(req.params.id), professorId: req.session.user.id },
+            where: { id: parseInt(req.params.id) },
         });
         res.sendStatus(200);
     } catch (error) {

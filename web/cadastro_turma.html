@@ -17,7 +17,7 @@
         document.getElementById('cadastroForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const nome = document.getElementById('nomeTurma').value;
-            await fetch('http://localhost:3000/turmas', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({nome}) });
+            await fetch('http://localhost:3000/turmas', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({nome}), credentials: 'include' });
             window.location.href = 'principal.html';
         });
     </script>

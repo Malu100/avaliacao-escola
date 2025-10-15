@@ -19,7 +19,7 @@
             e.preventDefault();
             const descricao = document.getElementById('descricao').value;
             const turma_id = getTurmaId();
-            await fetch('http://localhost:3000/atividades', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({descricao, turma_id}) });
+            await fetch('http://localhost:3000/atividades', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({descricao, turma_id}), credentials: 'include' });
             window.location.href = `atividades.html?turma_id=${turma_id}`;
         });
     </script>

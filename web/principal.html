@@ -18,12 +18,12 @@
     </div>
     <script>
         async function loadData() {
-            const res = await fetch('http://localhost:3000/check-session');
+            const res = await fetch('http://localhost:3000/check-session', {credentials: 'include'});
             if (!res.ok) window.location.href = 'index.html';
             const user = await res.json();
             document.getElementById('nomeProf').textContent = user.nome;
 
-            const turmasRes = await fetch('http://localhost:3000/turmas');
+            const turmasRes = await fetch('http://localhost:3000/turmas', {credentials: 'include'});
             const turmas = await turmasRes.json();
             const tbody = document.querySelector('#turmasTable tbody');
             tbody.innerHTML = '';
@@ -34,7 +34,19 @@
                 </td></tr>`;
             });
         }
-        function logout() { fetch('http://localhost:3000/logout', {method: 'POST'}).then(() => window.location.href = 'index.html'); }
+        async function excluirTurma(id) {
+            if (confirm('Deseja realmente excluir esta turma?')) {
+                const res = await fetch(`http://localhost:3000/turmas/${id}`, {method: 'DELETE', credentials: 'include'});
+                if (res.ok) {
+                    alert('Turma excluída com sucesso!');
+                    loadData();
+                } else {
+                    const data = await res.json();
+                    alert(data.message || 'Erro ao excluir turma');
+                }
+            }
+        }
+        function logout() { fetch('http://localhost:3000/logout', {method: 'POST', credentials: 'include'}).then(() => window.location.href = 'index.html'); }
         function visualizarAtividades(id) { window.location.href = `atividades.html?turma_id=${id}`; }
         window.onload = loadData;
     </script>

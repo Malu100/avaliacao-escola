@@ -20,16 +20,16 @@
         function getTurmaId() { return new URLSearchParams(window.location.search).get('turma_id'); }
         async function loadData() {
             const turma_id = getTurmaId();
-            const resUser = await fetch('http://localhost:3000/check-session');
+            const resUser = await fetch('http://localhost:3000/check-session', {credentials: 'include'});
             if (!resUser.ok) window.location.href = 'index.html';
             const user = await resUser.json();
             document.getElementById('nomeProf').textContent = user.nome;
 
-            const resTurma = await fetch(`http://localhost:3000/turmas/${turma_id}`);
+            const resTurma = await fetch(`http://localhost:3000/turmas/${turma_id}`, {credentials: 'include'});
             const turma = await resTurma.json();
             document.getElementById('nomeTurma').textContent = turma.nome;
 
-            const resAtiv = await fetch(`http://localhost:3000/atividades?turma_id=${turma_id}`);
+            const resAtiv = await fetch(`http://localhost:3000/atividades?turma_id=${turma_id}`, {credentials: 'include'});
             const ativs = await resAtiv.json();
             const tbody = document.querySelector('#atividadesTable tbody');
             tbody.innerHTML = '';
@@ -37,7 +37,7 @@
                 tbody.innerHTML += `<tr><td>${index+1}</td><td>${ativ.descricao}</td></tr>`;
             });
         }
-        function logout() { fetch('http://localhost:3000/logout', {method: 'POST'}).then(() => window.location.href = 'index.html'); }
+        function logout() { fetch('http://localhost:3000/logout', {method: 'POST', credentials: 'include'}).then(() => window.location.href = 'index.html'); }
         window.onload = loadData;
     </script>
 </body>
