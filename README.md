@@ -1,76 +1,40 @@
-# Escola Avaliação
+# Escola
 
-## Requisitos de Infraestrutura
-- SGBD: SQLite versão 3.x (arquivo local `turmas_db.db`).
-- Servidor de Aplicação: Node.js versão 18+ no sistema operacional Windows, Linux ou macOS.
-- Linguagem: JavaScript com Node.js versão 18+.
+## Ambiente de desenvolvimento
+- Node.js
+- MySQL (XAMPP- MariaDB)
+- Prisma ORM
+- React.js
+- Vite
 
-## Tutorial para Testar o Aplicativo
+## Passo a passo para executar
 
-Para configurar e testar a aplicação, siga os passos abaixo:
-
-### 1. Clonar o Repositório (se aplicável)
-Se você recebeu o projeto via um repositório Git, clone-o para sua máquina local:
+1. Clone o repositório
+2. Configure o banco de dados MySQL
+3. Acesse a pasta web e instale as dependências
 ```bash
-git clone https://github.com/seuusuario/escolaavaliacao.git
-cd escolaavaliacao
-```
-Se você recebeu o projeto como um arquivo ZIP, descompacte-o e navegue até a pasta `avaliacao-escola`.
-
-### 2. Configurar o Backend (API)
-Navegue até o diretório `api` dentro da pasta do projeto:
-```bash
-cd avaliacao-escola/api
-```
-
-Instale as dependências do Node.js:
-```bash
+cd web
 npm install
 ```
+4. Adicione o arquivo `.env` na raiz do projeto com a seguinte configuração:
+- Certifique-se de que o MySQL está em execução (usando XAMPP ou outro gerenciador)
 
-Após a instalação das dependências, gere o Prisma Client:
-```bash
-npx prisma generate
+```js
+DATABASE_URL="mysql://root@localhost:3306/escola"
 ```
-
-**Importante**: Para garantir que o banco de dados seja criado corretamente e populado com os dados de teste, remova qualquer arquivo `turmas_db.db` existente e as migrações anteriores, e então execute as novas migrações:
+5. Execute as migrações do Prisma para configurar o banco de dados
 ```bash
-rm -f turmas_db.db
-rm -rf prisma/migrations
 npx prisma migrate dev --name init
 ```
-
-Popule o banco de dados com dados de teste:
+6. Inicie o servidor de desenvolvimento
 ```bash
-node seed.js
+npm run dev
 ```
 
-Inicie o servidor backend:
+7. acesse a pasta do front end `./web` instale as dependências e inicie o servidor de desenvolvimento
 ```bash
-node app.js
+cd web
+npm install
+npm run dev
 ```
-O servidor estará rodando na porta `3000`.
-
-### 3. Acessar o Frontend (Interface Web)
-Com o servidor backend rodando, abra seu navegador e acesse a seguinte URL:
-```
-http://localhost:3000
-```
-
-**Observação Importante**: Não tente abrir o arquivo `index.html` diretamente do seu sistema de arquivos (ex: `file:///caminho/para/index.html`). A aplicação frontend se comunica com o backend via requisições HTTP, e o navegador impõe restrições de segurança (política de mesma origem - CORS) que impedem essa comunicação quando o frontend é carregado como um arquivo local. O servidor backend já está configurado para servir os arquivos estáticos do frontend, garantindo que tudo funcione corretamente ao acessar `http://localhost:3000`.
-
-### 4. Credenciais de Teste
-Utilize as seguintes credenciais para fazer login na aplicação:
-- **E-mail**: `prof1@example.com`
-- **Senha**: `senha1`
-
-### 5. Funcionalidades para Testar
-Após o login, você poderá testar as seguintes funcionalidades:
-- Visualizar o nome do professor logado.
-- Cadastrar novas turmas.
-- Visualizar a lista de turmas cadastradas.
-- Visualizar as atividades de uma turma específica.
-- Cadastrar novas atividades para uma turma.
-- Excluir atividades de uma turma.
-- Excluir turmas (com validação para turmas que possuem atividades).
-- Realizar logout do sistema.
+Clicar no link localhost para executar
